@@ -1,0 +1,4 @@
+kintai_resource:
+  url: /kintai/resource.json
+  param: { module: kintai, action: resource, sf_format: json }
+  requirements: { sf_method: [get] }

@@ -1,0 +1,50 @@
+options:
+  charset: utf8
+
+Project:
+  actAs: [Timestampable, SoftDelete]
+  columns:
+    id: { type: integer(4), primary: true, autoincrement: true }
+    name: { type: string(64), notnull: true }
+    description: { type: string }
+    start_date: { type: date }
+    end_date: { type: date }
+
+ProjectMember:
+  actAs: [Timestampable]
+  columns:
+    id: { type: integer(4), primary: true, autoincrement: true }
+    member_id: { type: integer(4), notnull: true }
+    project_id: { type: integer(4), notnull: true }
+    description: { type: string(64) }
+  relations:
+    Member: { foreign: id, local: member_id, onDelete: cascade }
+    Project: { foreign: id, local: project_id, onDelete: cascade }
+
+MemberResource:
+  actAs: [Timestampable]
+  columns: 
+    id: { type: integer(4), primary: true, autoincrement: true }
+    member_id: { type: integer(4), notnull: true }
+    start_date: { type: date, notnull: true }
+    end_date: { type: date, notnull: true }
+    resource: { type: integer(4) }
+  relations:
+    Member: { onDelete: cascade }
+
+ProjectResourceMaster:
+  actAs: [Timestampable]
+  columns:
+    id: { type: integer(4), primary: true, autoincrement: true }
+    member_id: { type: integer(4), notnull: true }
+    project_id: { type: integer(4), notnull: true }
+    day: { type: date, notnull: true }
+    start: { type: time, notnull: true }
+    end: { type: time, notnull: true }
+    rest: { type: time, notnull: true }
+    description: { type: string, notnull: true }
+    status: { type: integer(1), notnull: true, default: 1 }
+    # status 1 => 通常, 0 => 履歴(非公開), 2 => 論理削除(非公開)
+  relations:
+    Member: { foreign: id, local: member_id, onDelete: cascade }
+    Project: { foreign: id, local: project_id, onDelete: cascade }  
